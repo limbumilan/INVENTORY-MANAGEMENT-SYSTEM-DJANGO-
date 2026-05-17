@@ -1,0 +1,29 @@
+[
+  {
+    "model": "suppliers.Supplier",
+    "pk": 1,
+    "fields": {
+      "name": "Apex Electronics Ltd.",
+      "phone": "+1 (555) 019-2834",
+      "email": "john.doe@apexelectronics.com"
+    }
+  },
+  {
+    "model": "suppliers.Supplier",
+    "pk": 2,
+    "fields": {
+      "name": "Global Logistics Corp",
+      "phone": "+1 (555) 014-9982",
+      "email": "sjenkins@globallogistics.com"
+    }
+  },
+  {
+    "model": "suppliers.Supplier",
+    "pk": 3,
+    "fields": {
+      "name": "Starlight Packaging Inc",
+      "phone": "+1 (555) 017-4431",
+      "email": "m.chang@starlightpack.com"
+    }
+  }
+]
