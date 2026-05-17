@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS Live Inventory Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; background-color: #f4f6f9; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #bdc3c7; padding-bottom: 10px; }
+        .container { display: flex; gap: 30px; margin-top: 20px; }
+        .form-panel { flex: 1; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); height: fit-content; }
+        .table-panel { flex: 2; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #edf2f7; }
+        th { background-color: #2c3e50; color: white; text-transform: uppercase; font-size: 13px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #4a5568; }
+        .form-input { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; }
+        .btn { background-color: #3182ce; color: white; padding: 12px; border: none; border-radius: 4px; width: 100%; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .btn:hover { background-color: #2b6cb0; }
+        .alert { padding: 12px; margin-bottom: 15px; border-radius: 4px; font-weight: bold; }
+        .alert-success { background-color: #c6f6d5; color: #22543d; border-left: 5px solid #38a169; }
+        .alert-error { background-color: #fed7d7; color: #742a2a; border-left: 5px solid #e53e3e; }
+        .badge { padding: 4px 8px; border-radius: 20px; font-weight: bold; font-size: 11px; }
+        .instock { background-color: #def7ec; color: #03543f; }
+        .outstock { background-color: #fde8e8; color: #9b1c1c; }
+    </style>
+</head>
+<body>
+
+    <h1>📦 Live Inventory Control Workspace</h1>
+    <div style="margin-bottom: 20px;">
+    <a href="{% url 'export_inventory_csv' %}" style="background-color: #2f855a; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
+        📊 Export Live Report to CSV
+    </a>
+    </div>
+
+
+    <!-- Display status updates or errors returned from our signal guardrails -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="container">
+        
+        <!-- LEFT SIDE: LOG TRANSACTION FORM -->
+        <div class="form-panel">
+            <h3>Log Stock Movement</h3>
+            <form method="POST">
+                {% csrf_token %} <!-- Django security feature protecting against malicious form spoofing -->
+                
+                {% for field in form %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                
+                <button type="submit" class="btn">Process Movement</button>
+            </form>
+        </div>
+
+        <!-- RIGHT SIDE: LIVE BALANCES TABLE -->
+        <div class="table-panel">
+            <h3>Live Stock Inventory</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Live Stock Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td><strong>{{ product.name }}</strong></td>
+                        <td><code>{{ product.sku }}</code></td>
+                        <td>{{ product.category }}</td>
+                        <td>
+                            {% if product.inventory.quantity > 0 %}
+                                <span class="badge instock">{{ product.inventory.quantity }} Units</span>
+                            {% else %}
+                                <span class="badge outstock">0 Units (Out of Stock)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #718096;">No products found in system.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>
