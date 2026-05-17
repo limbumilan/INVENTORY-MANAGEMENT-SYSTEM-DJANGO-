@@ -33,32 +33,4 @@ This system is designed to simplify inventory tracking and management for small 
 
 ---
 
-## 📷 Screenshots
 
-> Add your screenshots in `/screenshots` folder
-
-### Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-### Products Page
-![Products](screenshots/products.png)
-
-### Login Page
-![Login](screenshots/login.png)
-
----
-
-## 🌐 Live Demo
-
-👉 [Click here to view live project](https://your-live-link.com)
-
----
-
-## ⚙️ Installation & Setup
-
-Follow these steps to run the project locally:
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/yourusername/ims-django.git
-cd ims-django
